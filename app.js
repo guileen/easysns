@@ -21,6 +21,7 @@ function find(ary, match) {
 
 var server = http.createServer(function(req, res) {
   var urlInfo = parseUrl(req.url)
+  console.log(req.url)
   var rule = find(rules, function(rule) {
     if (rule.path instanceof RegExp) {
       var matchResult = urlInfo.pathname.match(rule.path)
