@@ -20,3 +20,17 @@ exports.sendFile = function(path, res) {
     res.end(data)
   })
 }
+
+exports.redirect = function(location, res, statusCode) {
+  statusCode = statusCode || 302
+  res.writeHead(statusCode, {
+    location: location
+  })
+  res.end()
+}
+
+exports.sendError = function(err, res, statusCode) {
+  statusCode = statusCode || 500
+  res.writeHead(statusCode)
+  res.end(err.message)
+}
