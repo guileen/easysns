@@ -5,7 +5,7 @@
   "description": "一个简易的微博系统",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive"
   },
   "author": "",
   "license": "ISC",

@@ -6,10 +6,8 @@ const runner = require('../runner')
 const store = new MemStore()
 const model = new UserModel(store)
 
-runner([testEmail], function(err) {
-  if(!err) {
-    console.log('All done')
-  }
+describe('UserModel', function() {
+  it('could get by email', testEmail)
 })
 
 function testEmail(done) {
