@@ -1,8 +1,8 @@
 const getRawBody = require('./getRawBody')
 const qs = require('querystring')
 
-module.exports = function(req, callback) {
-  getRawBody(req, function(err, rawBody) {
+module.exports = function (req, callback) {
+  getRawBody(req, function (err, rawBody) {
     if (err) {
       return callback(err)
     }

@@ -7,23 +7,23 @@ const rules = [
   {path: '/user', controller: controllers.user},
   {path: '/auth/register', controller: controllers.auth.register, method: 'post'},
   {path: '/auth/login', controller: controllers.auth.login, method: 'post'},
-  {path: /^\/static(\/.*)/, controller: controllers.static},
+  {path: /^\/static(\/.*)/, controller: controllers.static}
 ]
 
-function notFoundController(req, res) {
+function notFoundController (req, res) {
   res.writeHead(404)
   res.end('Not found')
 }
 
-function find(ary, match) {
-  for(var i = 0; i< ary.length; i++) {
-    if(match(ary[i])) return ary[i]
+function find (ary, match) {
+  for (var i = 0; i < ary.length; i++) {
+    if (match(ary[i])) return ary[i]
   }
 }
 
-var server = http.createServer(function(req, res) {
+var server = http.createServer(function (req, res) {
   var urlInfo = parseUrl(req.url)
-  var rule = find(rules, function(rule) {
+  var rule = find(rules, function (rule) {
     if (rule.method) {
       if (rule.method.toLowerCase() !== req.method.toLowerCase()) {
         return false
@@ -36,7 +36,7 @@ var server = http.createServer(function(req, res) {
       }
       return matchResult
     }
-    return rule.path == urlInfo.pathname 
+    return rule.path === urlInfo.pathname
   })
   var controller = rule && rule.controller || notFoundController
   controller(req, res)
