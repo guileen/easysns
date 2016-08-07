@@ -1,6 +1,31 @@
 const send = require('../utils/send')
 const parseBody = require('../utils/parseBody')
 const models = require('../models')
+const crypto = require('crypto')
+
+function generateToken (userId, callback) {
+  var token = crypto.randomBytes(16).toString('hex')
+  models.token.update(token, userId, function (err) {
+    if (err) {
+      return callback(err)
+    }
+    callback(null, token)
+  })
+}
+
+function doLogin (userId, res) {
+  generateToken(userId, function (err, token) {
+    if (err) {
+      return send.sendError(err, res)
+    }
+    // 通过Cookie发送token并跳转/
+    res.writeHead(302, {
+      'Set-Cookie': 'token=' + token + '; path=/; HttpOnly',
+      location: '/'
+    })
+    res.end()
+  })
+}
 
 exports.login = function (req, res) {
   parseBody(req, function (err, body) {
@@ -8,7 +33,6 @@ exports.login = function (req, res) {
       send.sendError(err, res)
       return
     }
-    // login(body.email, body.password)
     models.user.getByEmail(body.email, function (err, user) {
       if (err) {
         return send.sendError(err, res)
@@ -19,8 +43,7 @@ exports.login = function (req, res) {
       if (body.password !== user.password) {
         return send.redirect('/?err=invalid_pass', res)
       }
-      // login(user)
-      send.redirect('/', res)
+      doLogin(user.id, res)
     })
   })
 }
@@ -41,8 +64,7 @@ exports.register = function (req, res) {
       if (err) {
         return send.sendError(err, res)
       }
-      // loginWithUser(user)
-      send.redirect('/', res)
+      doLogin(user.id, res)
     })
   })
 }
