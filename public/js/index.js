@@ -5,9 +5,11 @@
   // login()
   logout()
   publish()
-  follow()
   editAvatar()
   uploadAvatar()
+  getTimeline()
+  getNewUsers()
+  loadmore()
 
   // 注册登录选项卡切换
   function reglogTabChange () {
@@ -48,9 +50,7 @@
       })
     })
   }
-  */
 
-  /*
   // 登录
   function login () {
     $('#login').click(function () {
@@ -146,5 +146,42 @@
         }
       })
     })
+  }
+
+  // 获取列表
+  var page = 1
+  var limit = 10
+  function getTimeline () {
+    API.getTimeline(page, limit, function (err, data) {
+      if (err) {
+        alert('获取失败')
+      } else {
+        data.forEach(function (item) {
+          UI.addContent(item)
+        })
+      }
+    })
+  }
+
+  // 加载更多
+  function loadmore () {
+    $('#loadmore').click(function () {
+      page++
+      getTimeline()
+    })
+  }
+
+  // 获取用户
+  function getNewUsers () {
+    API.getNewUsers({}, function (err, data) {
+      if (err) {
+        alert('获取失败')
+      } else {
+        data.forEach(function (item) {
+          UI.addUser(item)
+        })
+      }
+    })
+    follow()
   }
 })()

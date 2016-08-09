@@ -33,7 +33,7 @@
     console.dir(file)
     var formdata = new FormData()
     formdata.append('file', file)
-    callback(null, 'http://static.thel.co/app/avatar/3568/e1f7c695ef00c8876ed65e8bb17e0b26.jpg')
+    callback(null, 'http://localhost:3000/static/img/nodejs.png')
   }
 
   // 发布一篇文章
@@ -42,8 +42,8 @@
     req.content = content
     console.dir(req)
     callback(null, {
-      avatar: 'http://static.thel.co/app/avatar/3568/e1f7c695ef00c8876ed65e8bb17e0b26.jpg',
-      nickName: '桂林',
+      avatar: 'http://localhost:3000/static/img/nodejs.png',
+      nickName: 'Demo User',
       content: content
     })
   }
@@ -64,31 +64,38 @@
     callback(null, req)
   }
 
-  // 获取微博列表
+  // 获取文章列表
   api.getTimeline = function (page, limit, callback) {
-    var req = {page: page, limit: limit}
+    var req = {}
+    req.page = page
+    req.limit = limit
     console.dir(req)
-    callback(null, [
-      {
-        avatar: 'http://static.thel.co/app/avatar/3568/e1f7c695ef00c8876ed65e8bb17e0b26.jpg',
-        nickName: 'xxx',
-        content: 'testtest .... testtest'
-      },
-      {
-        avatar: 'http://static.thel.co/app/avatar/3568/e1f7c695ef00c8876ed65e8bb17e0b26.jpg',
-        nickName: 'xxx',
-        content: 'testtest .... testtest'
-      },
-      {
-        avatar: 'http://static.thel.co/app/avatar/3568/e1f7c695ef00c8876ed65e8bb17e0b26.jpg',
-        nickName: 'xxx',
-        content: 'testtest .... testtest'
-      }
-    ])
+    callback(null, [{
+      avatar: 'http://localhost:3000/static/img/nodejs.png',
+      nickName: 'User 1',
+      content: '内容1'
+    }, {
+      avatar: 'http://localhost:3000/static/img/nodejs.png',
+      nickName: 'User 2',
+      content: '内容2'
+    }])
   }
 
-  // 获取最近注册用户
-  api.getRecentUser = function (page, limit) {}
+  // 获取用户列表
+  api.getNewUsers = function (req, callback) {
+    console.dir(req)
+    callback(null, [{
+      avatar: 'http://localhost:3000/static/img/nodejs.png',
+      nickName: 'User a',
+      userId: '3',
+      isFollow: true
+    }, {
+      avatar: 'http://localhost:3000/static/img/nodejs.png',
+      nickName: 'User b',
+      userId: '4',
+      isFollow: false
+    }])
+  }
 
   return api
 }))
