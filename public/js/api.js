@@ -28,6 +28,16 @@
     callback(null, '')
   }
 
+  api.getCurrentUser = function (callback) {
+    fetch('/user').then(res => res.json()).then(json => callback(null, json)).catch(callback)
+    /*
+    callback(null, {
+      nickName: '',
+      avatar: ''
+    })
+    */
+  }
+
   // 上传头像
   api.upload = function (file, callback) {
     console.dir(file)
