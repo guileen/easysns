@@ -5,11 +5,11 @@
   var api = {}
 
   // 注册
-  api.register = function (userName, password, nickName, callback) {
+  api.register = function (userName, password, nickname, callback) {
     var req = {}
     req.userName = userName
     req.password = password
-    req.nickName = nickName
+    req.nickname = nickname
     console.dir(req)
     callback(null, req)
   }
@@ -28,9 +28,10 @@
     callback(null, '')
   }
 
+  // 获取当前登录用户
   api.getCurrentUser = function (callback) {
     callback(null, {
-      nickName: '',
+      nickname: '',
       avatar: ''
     })
   }
@@ -50,7 +51,7 @@
     console.dir(req)
     callback(null, {
       avatar: 'http://localhost:3000/static/img/nodejs.png',
-      nickName: 'Demo User',
+      nickname: 'Demo User',
       content: content
     })
   }
@@ -79,11 +80,11 @@
     console.dir(req)
     callback(null, [/*{
       avatar: 'http://localhost:3000/static/img/nodejs.png',
-      nickName: 'User 1',
+      nickname: 'User 1',
       content: '内容1'
     }, {
       avatar: 'http://localhost:3000/static/img/nodejs.png',
-      nickName: 'User 2',
+      nickname: 'User 2',
       content: '内容2'
     }*/])
   }
@@ -93,12 +94,12 @@
     console.dir(req)
     callback(null, [/*{
       avatar: 'http://localhost:3000/static/img/nodejs.png',
-      nickName: 'User a',
+      nickname: 'User a',
       userId: '3',
       isFollow: true
     }, {
       avatar: 'http://localhost:3000/static/img/nodejs.png',
-      nickName: 'User b',
+      nickname: 'User b',
       userId: '4',
       isFollow: false
     }*/])

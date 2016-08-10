@@ -18,7 +18,7 @@
       '<div class="avatar">' +
       '<img src="' + data.avatar + '">' +
       '</div>' +
-      '<div class="nickName">' + data.nickName + '</div>' +
+      '<div class="nickname">' + data.nickname + '</div>' +
       '<div class="follow" data-userid="' + data.userId + '" data-isfollow="' + (data.isFollow ? '1' : '0') + '"">' + (data.isFollow ? '已关注' : '+ 关注') + '</div>' +
       '</div>'
     console.log('ui add User', tpl)
@@ -32,7 +32,7 @@
       '<div class="avatar">' +
       '<img src="' + data.avatar + '">' +
       '</div>' +
-      '<div class="nickName">' + data.nickName + '</div>' +
+      '<div class="nickname">' + data.nickname + '</div>' +
       '</div>' +
       '<div class="list-content">' + data.content + '</div>' +
       '</div>'

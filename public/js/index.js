@@ -21,8 +21,8 @@
       if (password !== confirmpassword) {
         return alert('两次密码不一致！')
       }
-      var nickName = $('#reg_nickName').val()
-      API.register(userName, password, nickName, function (err, data) {
+      var nickname = $('#reg_nickname').val()
+      API.register(userName, password, nickname, function (err, data) {
         if (err) {
           alert('注册失败')
         } else {
@@ -66,7 +66,7 @@
       if (err) {
         alert('获取信息失败')
       } else {
-        $('#naviNickName').html('<a href="#">' + data.nickName + '</a>')
+        $('#naviNickName').html('<a href="#">' + data.nickname + '</a>')
         $('#naviAvatar').find('img').attr('src', data.avatar)
       }
     })

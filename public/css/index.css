@@ -106,7 +106,7 @@
   font-size: 16px;
 }
 
-.list-user .nickName{
+.list-user .nickname{
   font-weight: bold;
 }
 
@@ -166,7 +166,7 @@
   width: 100%;
 }
 
-.nickName{
+.nickname{
   -webkit-flex:1;
       -ms-flex:1;
           flex:1;
