@@ -1,14 +1,17 @@
 var http = require('http')
 var controllers = require('./controllers')
 var parseUrl = require('url').parse
+const authorize = require('./middlewares/authorize')
 
 const rules = [
   {path: '/play', controller: controllers.play},
   {path: '/', controller: controllers.home},
-  {path: '/user', controller: controllers.user},
+  {path: '/user', controller: controllers.user.user},
+  {path: '/my/avatar', controller: controllers.user.myavatar},
   {path: '/auth/register', controller: controllers.auth.register, method: 'post'},
   {path: '/auth/login', controller: controllers.auth.login, method: 'post'},
-  {path: /^\/static(\/.*)/, controller: controllers.static}
+  {path: /^\/static(\/.*)/, controller: controllers.static},
+  {path: /^\/upload(\/.*)/, controller: controllers.static.upload}
 ]
 
 function notFoundController (req, res) {
@@ -40,6 +43,7 @@ var server = http.createServer(function (req, res) {
     return rule.path === urlInfo.pathname
   })
   var controller = rule && rule.controller || notFoundController
+  controller = authorize(controller)
   controller(req, res)
 })
 

@@ -1,7 +1,22 @@
-/* global FormData */
+/* global FormData fetch*/
 ;(function (root, factory) {
   root.API = factory()
 }(this, function () {
+  // convert fetch to node style
+  function fetchJson (path, opts) {
+    opts = opts || {}
+    opts.credentials = opts.credentials || 'same-origin'
+    return function (callback) {
+      fetch(path, opts).then(function (res) {
+        return res.json()
+      }).then(function (json) {
+        callback(null, json)
+      }).catch(function (err) {
+        callback(err)
+      })
+    }
+  }
+
   var api = {}
 
   // 注册
@@ -30,10 +45,13 @@
 
   // 获取当前登录用户
   api.getCurrentUser = function (callback) {
+    fetchJson('/user')(callback)
+    /*
     callback(null, {
       nickname: '',
       avatar: ''
     })
+    */
   }
 
   // 上传头像
@@ -41,7 +59,14 @@
     console.dir(file)
     var formdata = new FormData()
     formdata.append('file', file)
-    callback(null, 'http://localhost:3000/static/img/nodejs.png')
+    fetchJson('/my/avatar', {
+      method: 'POST',
+      body: formdata
+    })(function (err, data) {
+      if (err) return callback(err)
+      callback(null, data && data.avatar)
+    })
+    // callback(null, 'http://localhost:3000/static/img/nodejs.png')
   }
 
   // 发布一篇文章
