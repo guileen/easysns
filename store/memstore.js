@@ -1,37 +1,32 @@
-function MemStore () {
-  this.map = {}
-}
+class MemStore {
+  constructor () {
+    this.map = {}
+  }
 
-module.exports = MemStore
+  async set (key, value) {
+    this.map[key] = value
+  }
 
-MemStore.prototype.set = function (key, value, callback) {
-  this.map[key] = value
-  setImmediate(function () { callback() })
-}
+  async get (key) {
+    return this.map[key]
+  }
 
-MemStore.prototype.get = function (key, callback) {
-  var value = this.map[key]
-  setImmediate(function () { callback(null, value) })
-}
+  async del (key) {
+    delete this.map[key]
+  }
 
-MemStore.prototype.del = function (key, callback) {
-  delete this.map[key]
-  setImmediate(function () { callback() })
-}
-
-MemStore.prototype.incr = function (key, callback) {
-  var self = this
-  setImmediate(function () {
-    var value = self.map[key]
+  async incr (key) {
+    var value = await this.get(key)
     if (value === undefined) {
       value = 0
     }
     var num = parseInt(value, 10)
     if (Number.isNaN(num)) {
-      callback(new Error('INCR:Wrong type of value'))
-      return
+      throw new Error('INCR:Wrong type of value')
     }
-    self.map[key] = ++num
-    callback(null, num)
-  })
+    this.map[key] = ++num
+    return num
+  }
 }
+
+module.exports = MemStore
