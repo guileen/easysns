@@ -55,7 +55,7 @@
         if (err) {
           alert('注销失败')
         } else {
-          window.location.href = './reglog.html'
+          window.location.href = '/'
         }
       })
     })
