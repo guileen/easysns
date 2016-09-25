@@ -2,10 +2,21 @@
 ;(function (root, factory) {
   root.API = factory()
 }(this, function () {
+  function makeQuery (obj) {
+    return Object.keys(obj).map(
+      k => `${k}=${encodeURIComponent(obj[k])}`
+    ).join('&')
+  }
+
   // convert fetch to node style
   function fetchJson (path, opts) {
     opts = opts || {}
     opts.credentials = opts.credentials || 'same-origin'
+    if (opts.body && !(opts.body instanceof FormData)) {
+      opts.body = JSON.stringify(opts.body)
+      opts.headers = opts.headers || new Headers()
+      opts.headers.set('Content-Type', 'application/json; charset=UTF-8')
+    }
     return function (callback) {
       fetch(path, opts).then(function (res) {
         return res.json()
@@ -25,7 +36,6 @@
     req.userName = userName
     req.password = password
     req.nickname = nickname
-    console.dir(req)
     callback(null, req)
   }
 
@@ -34,7 +44,6 @@
     var req = {}
     req.userName = userName
     req.password = password
-    console.dir(req)
     callback(null, req)
   }
 
@@ -56,7 +65,6 @@
 
   // 上传头像
   api.upload = function (file, callback) {
-    console.dir(file)
     var formdata = new FormData()
     formdata.append('file', file)
     fetchJson('/my/avatar', {
@@ -71,63 +79,36 @@
 
   // 发布一篇文章
   api.publish = function (content, callback) {
-    var req = {}
-    req.content = content
-    console.dir(req)
-    callback(null, {
-      avatar: 'http://localhost:3000/static/img/nodejs.png',
-      nickname: 'Demo User',
-      content: content
-    })
+    fetchJson('/activities/', {
+      method: 'POST',
+      body: {content: content}
+    })(callback)
   }
 
   // 关注一个用户
   api.follow = function (userId, callback) {
-    var req = {}
-    req.userId = userId
-    console.dir(req)
-    callback(null, req)
+    fetchJson('/rel/follow', {
+      method: 'POST',
+      body: {id: userId}
+    })(callback)
   }
 
   // 取消关注
   api.unfollow = function (userId, callback) {
-    var req = {}
-    req.userId = userId
-    console.dir(req)
-    callback(null, req)
+    fetchJson('/rel/unfollow', {
+      method: 'POST',
+      body: {id: userId}
+    })(callback)
   }
 
   // 获取文章列表
   api.getTimeline = function (page, limit, callback) {
-    var req = {}
-    req.page = page
-    req.limit = limit
-    console.dir(req)
-    callback(null, [/*{
-      avatar: 'http://localhost:3000/static/img/nodejs.png',
-      nickname: 'User 1',
-      content: '内容1'
-    }, {
-      avatar: 'http://localhost:3000/static/img/nodejs.png',
-      nickname: 'User 2',
-      content: '内容2'
-    }*/])
+    fetchJson('/activities/?' + makeQuery({page: page, limit: limit}))(callback)
   }
 
   // 获取用户列表
   api.getNewUsers = function (req, callback) {
-    console.dir(req)
-    callback(null, [/*{
-      avatar: 'http://localhost:3000/static/img/nodejs.png',
-      nickname: 'User a',
-      userId: '3',
-      isFollow: true
-    }, {
-      avatar: 'http://localhost:3000/static/img/nodejs.png',
-      nickname: 'User b',
-      userId: '4',
-      isFollow: false
-    }*/])
+    fetchJson('/users')(callback)
   }
 
   return api

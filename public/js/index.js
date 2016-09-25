@@ -1,16 +1,5 @@
 /* global API UI alert */
 ;(function () {
-  // register()
-  // login()
-  logout()
-  currentUser()
-  publish()
-  editAvatar()
-  uploadAvatar()
-  getTimeline()
-  getNewUsers()
-  loadmore()
-
   /*
   // 注册
   function register () {
@@ -149,7 +138,7 @@
         alert('获取失败')
       } else {
         data.forEach(function (item) {
-          UI.addContent(item)
+          UI.addContent(item, true)
         })
       }
     })
@@ -170,10 +159,21 @@
         alert('获取失败')
       } else {
         data.forEach(function (item) {
-          UI.addUser(item)
+          UI.addUser(item, true)
         })
+        follow()
       }
     })
-    follow()
   }
+
+  // register()
+  // login()
+  logout()
+  currentUser()
+  publish()
+  editAvatar()
+  uploadAvatar()
+  getTimeline()
+  getNewUsers()
+  loadmore()
 })()
