@@ -17,20 +17,36 @@ class MongoBaseModel {
     return insertResult && insertResult.insertedId
   }
 
-  async get (id) {
-    return await this.collection.findOne({_id: this.toId(id)})
+  get (id) {
+    return this.collection.findOne({_id: this.toId(id)})
   }
 
-  async update (id, obj) {
-    return await this.collection.updateOne({_id: this.toId(id)}, obj)
+  update (id, obj) {
+    return this.collection.updateOne({_id: this.toId(id)}, obj)
   }
 
-  async updatePart(id, part) {
-    return await this.collection.updateOne({_id: this.toId(id)}, {$set: part})
+  updatePart (id, part) {
+    return this.collection.updateOne({_id: this.toId(id)}, {$set: part})
   }
 
-  async del(id) {
-    return await this.collection.deleteOne({_id: this.toId(id)})
+  del (id) {
+    return this.collection.deleteOne({_id: this.toId(id)})
+  }
+
+  deleteMany(query={}) {
+    return this.collection.deleteMany(query)
+  }
+
+  find (query={}, sort={}, limit=100) {
+    return this.collection.find(query).sort(sort).limit(limit)
+  }
+
+  findBefore (before, limit=100) {
+    return this.find({_id: {$lt: this.toId(before)}}, {_id: -1})
+  }
+
+  findSince (since, limit=100) {
+    return this.find({_id: {$gt: this.toId(since)}}, {_id: 1})
   }
 }
 

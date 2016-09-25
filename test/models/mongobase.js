@@ -29,4 +29,15 @@ describe('MongoBaseModel', () => {
     const result = await model.get(id)
     expect(result).not.to.be.ok
   })
+
+  it('shoud find list', async () => {
+    await model.deleteMany()
+    await model.create({foo: '1'})
+    await model.create({foo: '2'})
+    await model.create({foo: '3'})
+    var rows = await model.find().toArray()
+    expect(rows).to.have.deep.property('[0].foo', '1')
+    expect(rows).to.have.deep.property('[1].foo', '2')
+    expect(rows).to.have.deep.property('[2].foo', '3')
+  })
 })
