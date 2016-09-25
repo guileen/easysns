@@ -11,6 +11,9 @@ const logger = require('koa-logger')
 const router = require('./routes').router
 
 app.keys = ['abcde12345']
+app.use(mount('/static', require('koa-static')(__dirname + '/public')))
+app.use(mount('/upload', require('koa-static')(__dirname + '/data/upload')))
+
 // middlewares
 app.use(logger())
 // logger
@@ -21,8 +24,6 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
-app.use(mount('/static', require('koa-static')(__dirname + '/public')))
-app.use(mount('/upload', require('koa-static')(__dirname + '/data/upload')))
 app.use(bodyparser())
 app.use(json())
 app.use(session({
