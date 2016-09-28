@@ -3,10 +3,12 @@ const KEY_FOLLOWERS = 'user:followers:'
 
 class RelationModel {
 
+  // redis require coRedis
   constructor (redis) {
     this.redis = redis
   }
 
+  // userId  关注  toUserId
   follow (userId, toUserId) {
     return this.redis.multi([
       ['ZADD', KEY_FOLLOWINGS + userId, Date.now(), toUserId],
