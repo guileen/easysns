@@ -26,10 +26,20 @@ app.use(async (ctx, next) => {
 
 app.use(bodyparser())
 app.use(json())
+// old
+/*
 app.use(session({
   store: redisSessionStore({
     // options
   })
+}))
+*/
+// new
+const sessionStore = redisSessionStore({
+  // options
+})
+app.use(session({
+  store: sessionStore
 }))
 
 app.use(views(__dirname + '/views', {
@@ -44,6 +54,14 @@ app.on('error', function (err, ctx) {
   logger.error('server error', err, ctx)
 })
 
-app.listen(3000)
+// old
+// app.listen(3000)
+// new
+const http = require('http')
+const server = http.createServer(app.callback())
+server.listen(3000)
+
+// init wsapp
+require('./ws_app')(server, sessionStore, app.keys)
 
 module.exports = app

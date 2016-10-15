@@ -6,7 +6,7 @@ class TimelineModel {
   }
 
   push (userId, activityId) {
-    return this.redis.zadd(KEY_TIMELINE + userId, Date.now(), activityId)
+    return this.redis.zadd(KEY_TIMELINE + userId, Date.now(), '' + activityId)
   }
 
   range (userId, page, pageSize) {
