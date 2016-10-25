@@ -64,4 +64,23 @@ server.listen(3000)
 // init wsapp
 require('./ws_app')(server, sessionStore, app.keys)
 
+process.on('SIGUSR2', function() {
+    let profiler = require('v8-profiler')
+    let heapdump = require('heapdump')
+    let fs = require('fs')
+
+    let name = 'node.' + process.pid
+    heapdump.writeSnapshot(__dirname + '/' + name + '.heapsnapshot')
+
+    profiler.startProfiling(name, true)
+    setTimeout(function() {
+        let profile = profiler.stopProfiling()
+        profile.export()
+        .pipe(fs.createWriteStream(__dirname + '/' + name + '.cpuprofile'))
+        .on('finish', function() {
+            profile.delete()
+        })
+    }, 30000)
+})
+
 module.exports = app
